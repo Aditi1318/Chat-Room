@@ -11,8 +11,7 @@ services:
       - "27017:27017"
 
   backend:
-    build:
-      context: ./chat-app-backend
+    build: 
       dockerfile: Dockerfile
     container_name: chat-backend
     restart: unless-stopped
