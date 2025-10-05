@@ -8,18 +8,22 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
-
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat").setAllowedOrigins("http://localhost:5173").withSockJS();
-
+        // Updated this line to include your Vercel URL
+        registry.addEndpoint("/chat")
+                .setAllowedOrigins(
+                        "https://chat-room-eight-amber.vercel.app", // <-- IMPORTANT: Replace with your Vercel URL
+                        "http://localhost:5173" // For local development (assuming Vite)
+                )
+                .withSockJS();
     }
 }
