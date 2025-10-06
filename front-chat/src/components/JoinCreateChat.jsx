@@ -1,38 +1,31 @@
-import React from "react";
-// Using a built-in icon instead of a static asset for a cleaner look
+import React, {useState} from "react";
 import {BsChatDotsFill} from "react-icons/bs";
 import {FaUser, FaHashtag} from "react-icons/fa";
-import {useState} from "react";
 import toast from "react-hot-toast";
 import {createRoomApi, joinChatApi} from "../services/RoomService";
 import useChatContext from "../context/ChatContext";
 import {useNavigate} from "react-router";
+import {motion} from "framer-motion";
 
 const JoinCreateChat = () => {
-    // --- All your existing state and logic remains the same ---
-    const [detail, setDetail] = useState({
-        roomId: "",
-        userName: "",
-    });
+    const [detail, setDetail] = useState({roomId: "", userName: ""});
     const {setRoomId, setCurrentUser, setConnected} = useChatContext();
     const navigate = useNavigate();
 
-    function handleFormInputChange(event) {
+    const handleFormInputChange = (event) => {
         const {name, value} = event.target;
-        if (name === "roomId" || name === "userName") {
-            setDetail((prevDetail) => ({...prevDetail, [name]: value}));
-        }
-    }
+        setDetail((prev) => ({...prev, [name]: value}));
+    };
 
-    function validateForm() {
+    const validateForm = () => {
         if (detail.userName.trim() === "" || detail.roomId.trim() === "") {
             toast.error("Please fill in all fields");
             return false;
         }
         return true;
-    }
+    };
 
-    async function joinChat() {
+    const joinChat = async () => {
         if (validateForm()) {
             try {
                 const response = await joinChatApi(detail.roomId);
@@ -49,9 +42,9 @@ const JoinCreateChat = () => {
                 }
             }
         }
-    }
+    };
 
-    async function createRoom() {
+    const createRoom = async () => {
         if (validateForm()) {
             try {
                 const response = await createRoomApi(detail.roomId);
@@ -68,26 +61,51 @@ const JoinCreateChat = () => {
                 }
             }
         }
-    }
+    };
 
-    // --- The JSX has been completely refactored for UI/UX and responsiveness ---
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-indigo-100 dark:from-gray-900 dark:to-slate-800 p-4">
-            <div className="w-full max-w-md bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg border border-white/30 dark:border-gray-700/50 rounded-2xl shadow-xl p-8 space-y-6">
-                {/* Header Section */}
+        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-100 via-indigo-100 to-blue-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+            {/* Animated glow orbs */}
+            <div className="absolute inset-0">
+                <div className="absolute -top-20 -left-20 w-80 h-80 bg-blue-400/30 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-700"></div>
+            </div>
+
+            {/* Main Card */}
+            <motion.div
+                initial={{opacity: 0, y: 40}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.7, ease: "easeOut"}}
+                className="relative z-10 w-full max-w-md bg-white/70 dark:bg-gray-800/70 backdrop-blur-2xl border border-white/20 dark:border-gray-700/30 rounded-3xl shadow-2xl p-8 space-y-6"
+            >
+                {/* Header */}
                 <div className="text-center">
-                    <div className="inline-block p-4 bg-indigo-500 rounded-full mb-4">
+                    <div className="inline-block p-4 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-lg mb-4">
                         <BsChatDotsFill className="text-4xl text-white" />
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Welcome Back</h1>
-                    <p className="text-gray-600 dark:text-gray-400 mt-2">
-                        Enter a room or create a new one to start chatting.
+                    <h1 className="text-3xl font-extrabold text-gray-800 dark:text-white">ChatSphere</h1>
+                    <p className="text-gray-600 dark:text-gray-300 mt-2">
+                        Create or join a chat room and start talking instantly.
                     </p>
                 </div>
 
-                {/* Form Inputs */}
+                {/* About the App */}
+                <motion.div
+                    initial={{opacity: 0, y: 20}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{delay: 0.5}}
+                    className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 p-4 rounded-xl text-center text-sm text-gray-700 dark:text-gray-300 shadow-inner"
+                >
+                    <p>
+                        💬 <strong>ChatSphere</strong> is your personal chat room app —
+                        <em> connect, collaborate, and share</em> in real time. Built for speed, simplicity, and
+                        community.
+                    </p>
+                </motion.div>
+
+                {/* Input Fields */}
                 <div className="space-y-4">
-                    {/* Your Name Input */}
+                    {/* Username */}
                     <div className="relative">
                         <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
@@ -96,43 +114,52 @@ const JoinCreateChat = () => {
                             type="text"
                             name="userName"
                             placeholder="Enter your name"
-                            className="w-full pl-12 pr-4 py-3 bg-white/70 dark:bg-gray-700/50 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                            className="w-full pl-12 pr-4 py-3 bg-white/80 dark:bg-gray-700/50 text-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                         />
                     </div>
 
-                    {/* Room ID Input */}
+                    {/* Room ID */}
                     <div className="relative">
                         <FaHashtag className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
-                            name="roomId"
                             onChange={handleFormInputChange}
                             value={detail.roomId}
                             type="text"
+                            name="roomId"
                             placeholder="Enter Room ID"
-                            className="w-full pl-12 pr-4 py-3 bg-white/70 dark:bg-gray-700/50 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                            className="w-full pl-12 pr-4 py-3 bg-white/80 dark:bg-gray-700/50 text-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                         />
                     </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Buttons */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                    {/* Secondary Action: Create Room */}
-                    <button
+                    <motion.button
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 0.95}}
                         onClick={createRoom}
-                        className="w-full sm:w-auto px-6 py-3 font-semibold text-indigo-600 dark:text-indigo-400 bg-transparent border-2 border-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105"
+                        className="w-full sm:w-auto px-6 py-3 font-semibold text-indigo-600 border-2 border-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white transition-all duration-300"
                     >
                         Create Room
-                    </button>
-                    {/* Primary Action: Join Room */}
-                    <button
+                    </motion.button>
+
+                    <motion.button
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 0.95}}
                         onClick={joinChat}
-                        className="w-full sm:w-auto px-6 py-3 font-semibold text-white bg-indigo-500 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        className="w-full sm:w-auto px-6 py-3 font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                         Join Room
-                    </button>
+                    </motion.button>
                 </div>
-            </div>
+
+                {/* Footer */}
+                {/* <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
+                    Powered by React ⚛️ | Spring Boot 💻 | Socket.IO ⚡
+                </p> */}
+            </motion.div>
         </div>
     );
 };
+
 export default JoinCreateChat;
