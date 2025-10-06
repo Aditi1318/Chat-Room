@@ -1,4 +1,4 @@
-package main.java.com.chat.chat_app_backend.config;
+package com.chat.chat_app_backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
