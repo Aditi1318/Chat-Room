@@ -6,6 +6,7 @@ import {createRoomApi, joinChatApi} from "../services/RoomService";
 import useChatContext from "../context/ChatContext";
 import {useNavigate} from "react-router";
 import {motion} from "framer-motion";
+import {Typewriter} from "react-simple-typewriter";
 
 const JoinCreateChat = () => {
     const [detail, setDetail] = useState({roomId: "", userName: ""});
@@ -64,48 +65,73 @@ const JoinCreateChat = () => {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-100 via-indigo-100 to-blue-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-            {/* Animated glow orbs */}
+        <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-blue-100 via-indigo-100 to-blue-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
+            {/* Floating gradient glows */}
             <div className="absolute inset-0">
-                <div className="absolute -top-20 -left-20 w-80 h-80 bg-blue-400/30 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute -top-24 -left-20 w-80 h-80 bg-blue-400/30 rounded-full blur-3xl animate-pulse"></div>
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-700"></div>
             </div>
 
-            {/* Main Card */}
+            {/* --- Typewriter Header --- */}
+            <motion.div
+                initial={{opacity: 0, y: -40}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 1}}
+                className="relative z-10 text-center mb-8"
+            >
+                <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800 dark:text-white">
+                    Welcome to <span className="text-indigo-600">ChatSphere</span>
+                </h1>
+                <h2 className="text-xl sm:text-2xl mt-3 font-medium text-gray-700 dark:text-gray-300">
+                    <Typewriter
+                        words={[
+                            "Connect. Chat. Collaborate — in real time.",
+                            "Create rooms and talk instantly.",
+                            "Experience seamless group communication.",
+                        ]}
+                        loop={true}
+                        cursor
+                        cursorStyle="|"
+                        typeSpeed={70}
+                        deleteSpeed={50}
+                        delaySpeed={1500}
+                    />
+                </h2>
+            </motion.div>
+
+            {/* --- Main Card --- */}
             <motion.div
                 initial={{opacity: 0, y: 40}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.7, ease: "easeOut"}}
                 className="relative z-10 w-full max-w-md bg-white/70 dark:bg-gray-800/70 backdrop-blur-2xl border border-white/20 dark:border-gray-700/30 rounded-3xl shadow-2xl p-8 space-y-6"
             >
-                {/* Header */}
+                {/* Header Section */}
                 <div className="text-center">
                     <div className="inline-block p-4 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-lg mb-4">
                         <BsChatDotsFill className="text-4xl text-white" />
                     </div>
-                    <h1 className="text-3xl font-extrabold text-gray-800 dark:text-white">ChatSphere</h1>
+                    <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Get Started</h1>
                     <p className="text-gray-600 dark:text-gray-300 mt-2">
-                        Create or join a chat room and start talking instantly.
+                        Enter your name and a room ID to begin chatting.
                     </p>
                 </div>
 
-                {/* About the App */}
+                {/* About the App Section */}
                 <motion.div
-                    initial={{opacity: 0, y: 20}}
+                    initial={{opacity: 0, y: 10}}
                     animate={{opacity: 1, y: 0}}
-                    transition={{delay: 0.5}}
+                    transition={{delay: 0.4}}
                     className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 p-4 rounded-xl text-center text-sm text-gray-700 dark:text-gray-300 shadow-inner"
                 >
                     <p>
-                        💬 <strong>ChatSphere</strong> is your personal chat room app —
-                        <em> connect, collaborate, and share</em> in real time. Built for speed, simplicity, and
-                        community.
+                        💡 <strong>ChatSphere</strong> helps you stay connected — whether for friends, study groups, or
+                        quick collaborations — in one real-time chat space.
                     </p>
                 </motion.div>
 
                 {/* Input Fields */}
                 <div className="space-y-4">
-                    {/* Username */}
                     <div className="relative">
                         <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
@@ -118,7 +144,6 @@ const JoinCreateChat = () => {
                         />
                     </div>
 
-                    {/* Room ID */}
                     <div className="relative">
                         <FaHashtag className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
@@ -155,7 +180,7 @@ const JoinCreateChat = () => {
 
                 {/* Footer */}
                 {/* <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
-                    Powered by React ⚛️ | Spring Boot 💻 | Socket.IO ⚡
+                    Built with ❤️ using React, Spring Boot & Socket.IO
                 </p> */}
             </motion.div>
         </div>
