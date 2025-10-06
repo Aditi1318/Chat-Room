@@ -12,11 +12,10 @@ import {getMessages} from "../services/RoomService";
 import {timeAgo} from "../config/helper";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
-// --- CHANGE 1: Import animation library ---
+
 import {motion, AnimatePresence} from "framer-motion";
 
 const ChatPage = () => {
-    // --- All your existing state and logic remains the same ---
     const {roomId, currentUser, connected, setConnected, setRoomId, setCurrentUser} = useChatContext();
     const navigate = useNavigate();
 
