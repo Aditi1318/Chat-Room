@@ -15,9 +15,6 @@ import java.util.Optional;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-@CrossOrigin("http://localhost:5173")
 @RestController
 @RequestMapping("/api/files")
 public class FileUploadController {
@@ -45,7 +42,6 @@ public class FileUploadController {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String id) {

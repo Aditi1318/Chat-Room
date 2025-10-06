@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.time.LocalDateTime;
 
 @Controller
-@CrossOrigin("http://localhost:5173")
+
 public class ChatController {
 
     private final RoomRepository roomRepository;
