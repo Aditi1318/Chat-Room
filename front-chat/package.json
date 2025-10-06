@@ -14,6 +14,7 @@
     "@tailwindcss/vite": "^4.0.9",
     "axios": "^1.8.1",
     "emoji-picker-react": "^4.12.0",
+    "framer-motion": "^12.23.22",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

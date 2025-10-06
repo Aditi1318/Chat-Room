@@ -12,6 +12,8 @@ import {getMessages} from "../services/RoomService";
 import {timeAgo} from "../config/helper";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
+// --- CHANGE 1: Import animation library ---
+import {motion, AnimatePresence} from "framer-motion";
 
 const ChatPage = () => {
     // --- All your existing state and logic remains the same ---
@@ -134,11 +136,12 @@ const ChatPage = () => {
         navigate("/");
     }
 
-    // --- The JSX has been completely refactored for UI/UX and responsiveness ---
+    // --- The JSX has been updated with the requested UI enhancements ---
     return (
-        <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-            {/* Header */}
-            <header className="flex-shrink-0 bg-white dark:bg-gray-800 shadow-md z-10">
+        // --- CHANGE 2: Added subtle background gradient ---
+        <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-indigo-100 dark:from-gray-900 dark:to-slate-800 transition-colors duration-300">
+            {/* --- CHANGE 3: Added Frosted Glass effect to Header --- */}
+            <header className="flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-md z-10">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex flex-col">
@@ -177,65 +180,76 @@ const ChatPage = () => {
             <main ref={chatBoxRef} className="flex-grow overflow-y-auto">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <div className="space-y-4">
-                        {messages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={`flex items-end gap-3 ${
-                                    message.sender === currentUser ? "justify-end" : "justify-start"
-                                }`}
-                            >
-                                {message.sender !== currentUser && (
-                                    <img
-                                        src={`https://robohash.org/${message.sender}.png?set=set4&size=40x40`}
-                                        alt={`${message.sender}'s avatar`}
-                                        className="w-8 h-8 rounded-full flex-shrink-0"
-                                    />
-                                )}
-                                <div
-                                    className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-2xl shadow ${
-                                        message.sender === currentUser
-                                            ? "bg-indigo-500 text-white rounded-br-none"
-                                            : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none"
+                        {/* --- CHANGE 4: Added AnimatePresence for message animations --- */}
+                        <AnimatePresence>
+                            {messages.map((message, index) => (
+                                // --- CHANGE 5: Converted message div to motion.div and added animation props ---
+                                <motion.div
+                                    layout
+                                    key={index}
+                                    initial={{opacity: 0, scale: 0.8, y: 20}}
+                                    animate={{opacity: 1, scale: 1, y: 0}}
+                                    exit={{opacity: 0, scale: 0.8}}
+                                    transition={{duration: 0.3, ease: "easeOut"}}
+                                    className={`flex items-end gap-3 ${
+                                        message.sender === currentUser ? "justify-end" : "justify-start"
                                     }`}
                                 >
-                                    <div className="flex items-center mb-1">
-                                        <p className="font-semibold text-sm">
-                                            {message.sender !== currentUser && message.sender}
+                                    {message.sender !== currentUser && (
+                                        <img
+                                            src={`https://robohash.org/${message.sender}.png?set=set4&size=40x40`}
+                                            alt={`${message.sender}'s avatar`}
+                                            className="w-8 h-8 rounded-full flex-shrink-0"
+                                        />
+                                    )}
+                                    <div
+                                        className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-2xl shadow ${
+                                            message.sender === currentUser
+                                                ? "bg-indigo-500 text-white rounded-br-none"
+                                                : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none"
+                                        }`}
+                                    >
+                                        <div className="flex items-center mb-1">
+                                            <p className="font-semibold text-sm">
+                                                {message.sender !== currentUser && message.sender}
+                                            </p>
+                                        </div>
+                                        <div className="prose prose-sm dark:prose-invert prose-p:my-0 prose-a:text-indigo-300 hover:prose-a:text-indigo-200">
+                                            <ReactMarkdown
+                                                components={{
+                                                    a: ({node, ...props}) => (
+                                                        <a
+                                                            {...props}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="underline"
+                                                        />
+                                                    ),
+                                                }}
+                                            >
+                                                {message.content}
+                                            </ReactMarkdown>
+                                        </div>
+                                        <p className="text-xs text-right mt-1 opacity-70">
+                                            {timeAgo(message.timeStamp)}
                                         </p>
                                     </div>
-                                    <div className="prose prose-sm dark:prose-invert prose-p:my-0 prose-a:text-indigo-300 hover:prose-a:text-indigo-200">
-                                        <ReactMarkdown
-                                            components={{
-                                                a: ({node, ...props}) => (
-                                                    <a
-                                                        {...props}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="underline"
-                                                    />
-                                                ),
-                                            }}
-                                        >
-                                            {message.content}
-                                        </ReactMarkdown>
-                                    </div>
-                                    <p className="text-xs text-right mt-1 opacity-70">{timeAgo(message.timeStamp)}</p>
-                                </div>
-                                {message.sender === currentUser && (
-                                    <img
-                                        src={`https://robohash.org/${currentUser}.png?set=set4&size=40x40`}
-                                        alt="My avatar"
-                                        className="w-8 h-8 rounded-full flex-shrink-0"
-                                    />
-                                )}
-                            </div>
-                        ))}
+                                    {message.sender === currentUser && (
+                                        <img
+                                            src={`https://robohash.org/${currentUser}.png?set=set4&size=40x40`}
+                                            alt="My avatar"
+                                            className="w-8 h-8 rounded-full flex-shrink-0"
+                                        />
+                                    )}
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                 </div>
             </main>
 
-            {/* Message Input Area */}
-            <footer className="flex-shrink-0 bg-white dark:bg-gray-800 shadow-t-md z-10">
+            {/* --- CHANGE 6: Added Frosted Glass effect to Footer --- */}
+            <footer className="flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-t-md z-10">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="relative py-3">
                         {showEmojiPicker && (
