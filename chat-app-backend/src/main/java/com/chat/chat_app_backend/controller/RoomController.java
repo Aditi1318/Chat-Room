@@ -11,6 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/rooms")
+@CrossOrigin(origins = {
+        "https://chat-room-eight-amber.vercel.app", // Vercel frontend URL
+        "http://localhost:5173" // Local dev server
+})
 public class RoomController {
 
     private RoomRepository roomRepository;

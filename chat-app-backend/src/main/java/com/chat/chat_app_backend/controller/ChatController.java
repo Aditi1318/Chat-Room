@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.time.LocalDateTime;
 
 @Controller
-
+@CrossOrigin(origins = {
+        "https://chat-room-eight-amber.vercel.app", // Vercel frontend URL
+        "http://localhost:5173" // Local dev server
+})
 public class ChatController {
 
     private final RoomRepository roomRepository;
@@ -24,11 +27,10 @@ public class ChatController {
 
     // Sending and receiving chat messages
     @MessageMapping("/sendMessage/{roomId}") // /app/sendMessage/roomId
-    @SendTo("/topic/room/{roomId}")          // frontend subscribes to this
+    @SendTo("/topic/room/{roomId}") // frontend subscribes to this
     public Message sendMessage(
             @DestinationVariable String roomId,
-            MessageRequest request
-    ) {
+            MessageRequest request) {
         Room room = roomRepository.findByRoomId(request.getRoomId());
 
         Message message = new Message();

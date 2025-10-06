@@ -15,6 +15,10 @@ import java.util.Optional;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = {
+        "https://chat-room-eight-amber.vercel.app", // Vercel frontend URL
+        "http://localhost:5173" // Local dev server
+})
 @RestController
 @RequestMapping("/api/files")
 public class FileUploadController {
