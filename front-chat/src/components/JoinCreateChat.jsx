@@ -80,7 +80,7 @@ const JoinCreateChat = () => {
                 className="relative z-10 text-center mb-8"
             >
                 <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800 dark:text-white">
-                    Welcome to <span className="text-indigo-600">ChatSphere</span>
+                    Welcome to <span className="text-indigo-600">ChitChat</span>
                 </h1>
                 <h2 className="text-xl sm:text-2xl mt-3 font-medium text-gray-700 dark:text-gray-300">
                     <Typewriter
@@ -125,8 +125,8 @@ const JoinCreateChat = () => {
                     className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 p-4 rounded-xl text-center text-sm text-gray-700 dark:text-gray-300 shadow-inner"
                 >
                     <p>
-                        💡 <strong>ChatSphere</strong> helps you stay connected — whether for friends, study groups, or
-                        quick collaborations — in one real-time chat space.
+                        <strong>ChitChat</strong> helps you stay connected — whether for friends, study groups, or quick
+                        collaborations — in one real-time chat space.
                     </p>
                 </motion.div>
 
