@@ -1,19 +1,21 @@
-import { parseISO, format } from 'date-fns';
+import { format } from 'date-fns';
 
 export const timeAgo = (timeStamp) => {
   if (!timeStamp) return '';
 
   try {
-    let date = parseISO(timeStamp);
+    let date;
 
-    // Auto-fix timezone mismatch (if needed)
-    if (date.getTime() > Date.now() + 60000) {
-      date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    // Auto-detect missing timezone and fix (assume UTC)
+    if (!timeStamp.endsWith('Z') && !/[+-]\d{2}:\d{2}$/.test(timeStamp)) {
+      date = new Date(timeStamp + 'Z'); // interpret as UTC
+    } else {
+      date = new Date(timeStamp);
     }
 
-    // Format the time in local timezone (e.g., "08:45 PM")
-    return format(date, 'hh:mm a'); // 12-hour format
-    // use 'HH:mm' for 24-hour format (e.g., "20:45")
+    // Format output like "Oct 6, 11:44 PM"
+    return format(date, 'MMM d, hh:mm a'); // 12-hour format
+    // For 24-hour format: 'MMM d, HH:mm'
 
   } catch (error) {
     console.error('Error parsing timestamp:', timeStamp, error);
