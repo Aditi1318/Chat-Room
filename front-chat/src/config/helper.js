@@ -1,21 +1,22 @@
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import { parseISO, format } from 'date-fns';
 
 export const timeAgo = (timeStamp) => {
-  // Return a default value if the timestamp is missing
-  if (!timeStamp) {
-    return 'just now';
-  }
+  if (!timeStamp) return '';
 
   try {
-    const date = parseISO(timeStamp);
+    let date = parseISO(timeStamp);
 
-    // formatDistanceToNow() calculates the time difference from now
-    // and adds the "ago" suffix.
-    return formatDistanceToNow(date, { addSuffix: true });
-    
+    // Auto-fix timezone mismatch (if needed)
+    if (date.getTime() > Date.now() + 60000) {
+      date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    }
+
+    // Format the time in local timezone (e.g., "08:45 PM")
+    return format(date, 'hh:mm a'); // 12-hour format
+    // use 'HH:mm' for 24-hour format (e.g., "20:45")
+
   } catch (error) {
-    console.error("Error parsing timestamp:", timeStamp, error);
-    // Fallback for any unexpected format
-    return 'a while ago';
+    console.error('Error parsing timestamp:', timeStamp, error);
+    return '';
   }
 };
