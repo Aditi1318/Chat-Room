@@ -13,6 +13,7 @@
     "@stomp/stompjs": "^7.0.0",
     "@tailwindcss/vite": "^4.0.9",
     "axios": "^1.8.1",
+    "date-fns": "^4.1.0",
     "emoji-picker-react": "^4.12.0",
     "framer-motion": "^12.23.22",
     "postcss": "^8.5.3",
