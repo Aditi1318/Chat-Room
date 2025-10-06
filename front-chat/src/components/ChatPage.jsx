@@ -12,6 +12,7 @@ import {getMessages} from "../services/RoomService";
 import {timeAgo} from "../config/helper";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
+// --- CHANGE 1: Import animation library ---
 import {motion, AnimatePresence} from "framer-motion";
 
 const ChatPage = () => {
@@ -137,9 +138,9 @@ const ChatPage = () => {
 
     // --- The JSX has been updated with the requested UI enhancements ---
     return (
-        // --- Added subtle background gradient ---
+        // --- CHANGE 2: Added subtle background gradient ---
         <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-indigo-100 dark:from-gray-900 dark:to-slate-800 transition-colors duration-300">
-            {/* --- Added Frosted Glass effect to Header --- */}
+            {/* --- CHANGE 3: Added Frosted Glass effect to Header --- */}
             <header className="flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-md z-10">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
@@ -179,8 +180,10 @@ const ChatPage = () => {
             <main ref={chatBoxRef} className="flex-grow overflow-y-auto">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <div className="space-y-4">
+                        {/* --- CHANGE 4: Added AnimatePresence for message animations --- */}
                         <AnimatePresence>
                             {messages.map((message, index) => (
+                                // --- CHANGE 5: Converted message div to motion.div and added animation props ---
                                 <motion.div
                                     layout
                                     key={index}
@@ -245,7 +248,7 @@ const ChatPage = () => {
                 </div>
             </main>
 
-            {/* Message Input Area */}
+            {/* --- CHANGE 6: Added Frosted Glass effect to Footer --- */}
             <footer className="flex-shrink-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-t-md z-10">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="relative py-3">
